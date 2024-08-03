@@ -1,2 +1,2 @@
-./envi
-./__pycache__
+envi/
+__pycache__/

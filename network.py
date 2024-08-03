@@ -70,7 +70,7 @@ class Network:
             subprocess.run(connect, shell=True, check=True)
             time.sleep(2)
 
-            if self.check_connection(ssid):
+            if self.check_connection():
                 print(f'Você está conectado à rede Wi-Fi: {ssid}')
             else:
                 print(f'Você não está conectado a nenhuma rede Wi-Fi.')
@@ -93,7 +93,7 @@ class Network:
 
         passwordsList = []
 
-        while not self.check_connection(ssid):
+        while not self.check_connection():
             # Gera uma senha aleatória
             generatedPassword = "".join(choice(chars) for _ in range(randint(min_len, max_len)))
 
@@ -101,11 +101,10 @@ class Network:
                 self.connect(ssid, generatedPassword)
             
             passwordsList.append(generatedPassword)
-            print(f'Generated password: {generatedPassword}')
             print(f'List passwords: {passwordsList}')
 
 
-    def check_connection(self, ssid):
+    def check_connection(self):
         try:
             result = subprocess.run(['netsh', 'wlan', 'show', 'interfaces'], capture_output=True, text=True)
 
@@ -117,12 +116,11 @@ class Network:
 
             if connected == "Conectado":
                 return True
-            else:
-                return False
 
         except subprocess.CalledProcessError as e:
             print(f'Erro ao verificar a conexão Wi-Fi: {e}')
-            return False
+
+        return False
 
 
 def profile_exists(ssid):

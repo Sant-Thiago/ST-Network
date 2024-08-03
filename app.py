@@ -5,5 +5,6 @@ from network import Network
 # password = input("Digite a senha:: ")
 
 network = Network()
-# network.hack("Jorge Henrique")
-network.connect("Jorge Henrique", "marilu2013")
+network.hack("ANDERSONBORGES_0408")
+# network.list()
+# network.connect("Jorge Henrique", "")
