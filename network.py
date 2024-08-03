@@ -68,7 +68,7 @@ class Network:
 
             connect = f'netsh wlan connect name="{ssid}"'
             subprocess.run(connect, shell=True, check=True)
-            time.sleep(4.20)
+            time.sleep(2)
 
             if self.check_connection(ssid):
                 print(f'Você está conectado à rede Wi-Fi: {ssid}')
@@ -108,8 +108,6 @@ class Network:
     def check_connection(self, ssid):
         try:
             result = subprocess.run(['netsh', 'wlan', 'show', 'interfaces'], capture_output=True, text=True)
-
-            print(f'result--> {result.stdout}')
 
             connected = None
             for line in result.stdout.split('\n'):
