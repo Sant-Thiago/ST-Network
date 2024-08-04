@@ -35,3 +35,49 @@ def listAll(table):
         
 def list(table, fields):
     query = f"SELECT {fields} FROM {table}"
+
+    with ConDB() as conDB:
+        if conDB.connection:
+            cursor = conDB.connection.cursor()
+            cursor.execute(query)
+            result = cursor.fetchall()
+            cursor.close()
+            return result
+        
+def createDB(name):
+    query = f"""
+    BEGIN
+        IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = '{name}')
+        BEGIN
+            CREATE DATABASE {name}
+        END
+
+        SELECT name FROM sys.databases WHERE name = '{name}'
+    END"""
+
+    with ConDB() as conDB:
+        if conDB.connection:
+            cursor = conDB.connection.cursor()
+            cursor.execute(query)
+            result = cursor.fetchone()
+            cursor.close()
+            return result
+        
+def createTB(name):
+    query = f"""
+    BEGIN
+        IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[{name}]') AND type in (N'U'))
+        BEGIN
+            CREATE DATABASE {name} (Id INT IDENTITY(1,1) PRIMARY KEY);
+        END
+
+        SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[{name}]') AND type in (N'U')
+    END"""
+
+    with ConDB() as conDB:
+        if conDB.connection:
+            cursor = conDB.connection.cursor()
+            cursor.execute(query)
+            result = cursor.fetchone()
+            cursor.close()
+            return result

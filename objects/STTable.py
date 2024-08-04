@@ -5,7 +5,7 @@ from typing import List
 
 class STTable:
     
-    def __init__(self, name: str, cols: List[str], created: datetime) -> None:
+    def __init__(self, name: str, cols: List[str], created: datetime = datetime.now()) -> None:
         """
         Inicializa um objeto tabela.
 
@@ -14,6 +14,7 @@ class STTable:
         :param created: data de criação da tabela.
         """
         
+        create(name)
         self.name = name
         self.cols = cols
         self.created = created
@@ -33,6 +34,14 @@ class STTable:
                 f"Colunas: {self.cols}\n"
                 f"Data de Criação: {self.created}")
     
+    def create(self, name) -> None:
+        try:
+            result = queries.createTB(name)
+            print(f'[INFO] Tabela criada com sucesso: {result}')
+
+        except pyodbc.Error as e:
+            print(f'[ERROR] Não foi possível criar tabela: {e}')
+
     def insert(self, objTable) -> None:
         try:
             ids = []

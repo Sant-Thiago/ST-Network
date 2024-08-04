@@ -1,7 +1,5 @@
 import pyodbc
 from config.config import STDATABASE_CONFIG as STDB
-import urllib.parse
-from typing import List
 
 class SQLServerConnect:
     def __init__(self) -> None:
