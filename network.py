@@ -3,6 +3,7 @@ import time
 import os
 import string
 from random import *
+import database.connector as connector
 
 
 class Network:
@@ -86,7 +87,8 @@ class Network:
     def hack(self, ssid):
         letters = string.ascii_letters
         digits = string.digits
-        chars = letters+digits
+        special = string.punctuation
+        chars = letters+digits+special
 
         min_len = 8
         max_len = 16
@@ -102,6 +104,8 @@ class Network:
             
             passwordsList.append(generatedPassword)
             print(f'List passwords: {passwordsList}')
+        
+        insert(passwordsList)
 
 
     def check_connection(self):
