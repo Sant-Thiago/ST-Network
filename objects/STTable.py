@@ -1,3 +1,5 @@
+import pyodbc
+from scripts import queries
 from datetime import datetime
 from typing import List
 
@@ -32,19 +34,42 @@ class STTable:
                 f"Data de Criação: {self.created}")
     
     def insert(self, objTable) -> None:
+        try:
+            ids = []
+            for table in objTable:
+                fields = join_(table.keys())
+                values = join_(table.values())
+
+                res = queries.insert(self.name, fields, values)
+                ids.append(res)
+
+            print(f'[INFO] Dados inseridos com sucesso: {ids}')
         
-        for table in objTable:
-            chaves = table.keys()
-            fields = ', '.join(list(chaves))
-            valores = table.keys()
-            values = ', '.join(list(valores))
-            queries.insert(self.name, fields, values)
-
+        except pyodbc.Error as e:
+            print(f'[ERROR] Não foi possível inserir dados: {e}')
             
+    def list(self, objFields="*"):
+        try:
+            if objFields == "*":
+                result = queries.listAll(self.name)
+                print(f'[INFO] Dados listados com sucesso: {result}')
+                return result
+
+            for field in objFields:
+                campo = field.keys()
+                values = field.values()
+                if campo == "nin":
+                    filteredCols = join_([col for col in self.cols if all(col != val for val in values)])
+                elif campo == "in":
+                    filteredCols = join_([col for col in self.cols if all(col == val for val in values)])
+
+            result = queries.list(self.name, filteredCols)
+            print(f'[INFO] Dados listados com sucesso: {result}')
+            return result
+
+        except pyodbc.Error as e:
+            print(f'[ERROR] Não foi possível listar dados: {e}')
 
 
-    # def getDatabases(self) -> List[STTable]:
-    #     try:
-    #         cursor = self.connection.cursor()
-    #         cursor.execute("SELECT name FROM sys.databases")
-    #         databases = cursor.fetchall()
+def join_(object) -> str:
+    return ', '.join(list(object))
