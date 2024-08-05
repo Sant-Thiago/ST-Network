@@ -8,7 +8,4 @@ from objects.STDatabase import STDatabase
 network = Network()
 # network.hack("ANDERSONBORGES_0408")
 # network.list()
-# network.connect("Jorge Henrique", "")
 
-
-db = STDatabase().createTable('client')
