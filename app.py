@@ -1,5 +1,4 @@
 from network import Network
-from objects.STDatabase import STDatabase
 
 # print("Informações de rede")
 # ssid = input("Digite o SSID:: ")

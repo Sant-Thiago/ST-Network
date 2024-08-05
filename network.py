@@ -3,7 +3,6 @@ import time
 import os
 import string
 from random import *
-import database.connector as connector
 
 
 class Network:
@@ -104,8 +103,6 @@ class Network:
             
             passwordsList.append(generatedPassword)
             print(f'List passwords: {passwordsList}')
-        
-        insert(passwordsList)
 
 
     def check_connection(self):
