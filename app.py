@@ -1,17 +1,14 @@
 from network import Network
+from objects.STDatabase import STDatabase
 
 # print("Informações de rede")
 # ssid = input("Digite o SSID:: ")
 # password = input("Digite a senha:: ")
 
 network = Network()
-network.hack("ANDERSONBORGES_0408")
+# network.hack("ANDERSONBORGES_0408")
 # network.list()
 # network.connect("Jorge Henrique", "")
 
 
-db = Database('nome')
-db.createDB('nome').tables[0]
-
-# alternativa 
-db = Database().createDB('nome').tables[0]
+db = STDatabase().createTable('client')

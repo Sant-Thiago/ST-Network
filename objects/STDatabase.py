@@ -1,19 +1,18 @@
 import pyodbc
+from objects.STTable import STTable
 from scripts import queries
 from datetime import datetime
-from STTable import STTable
 from typing import List
 
 class STDatabase:
     
-    def __init__(self, name: str, created: datetime = datetime.now()) -> None:
+    def __init__(self, name: str = 'generic_database', created: datetime = datetime.now()) -> None:
         """
         Inicializa um objeto banco de dados.
 
         :param name: nome do banco de dados.
         """
         
-        self.create(name)
         self.name = name
         self.tables = List[STTable]
         self.created = created
@@ -46,6 +45,8 @@ class STDatabase:
     def createTable(self, name) -> None:
         try:
             result = queries.createTB(name)
+            print(result)
+            # newTable = STTable()
             print(f'[INFO] Database criada com sucesso: {result}')
 
         except pyodbc.Error as e:

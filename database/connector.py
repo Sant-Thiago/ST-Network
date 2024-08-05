@@ -1,20 +1,17 @@
-import pyodbc
+import pymssql
 from config.config import STDATABASE_CONFIG as STDB
 
 class SQLServerConnect:
     def __init__(self) -> None:
         try:
-            conn_str = (
-                f"DRIVER={STDB['sqlDriver']};"
-                f"SERVER={STDB['sqlServer']};"
-                f"UID={STDB['sqlUser']};"
-                f"PWD={STDB['sqlPassword']}"
+            self.connection = pymssql.connect(
+                server=STDB['sqlServer'],
+                user=STDB['sqlUser'],
+                password=STDB['sqlPassword'],
+                database=STDB['sqlDatabase']
             )
-
-            self.connection = pyodbc.connect(conn_str)
             print("[SUCCESS] Conexão com SQL Server estabelecida com sucesso!")
-
-        except pyodbc.Error as e:
+        except pymssql.Error as e:
             print(f"[ERROR] erro ao conectar ao SQL Server:: {e}")
             self.connection = None
 
@@ -25,4 +22,5 @@ class SQLServerConnect:
         if self.connection:
             self.connection.close()
             print('[INFO] Conexão com SQL Server fechada.')
+        
 

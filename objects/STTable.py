@@ -14,7 +14,7 @@ class STTable:
         :param created: data de criação da tabela.
         """
         
-        create(name)
+        # self.create(name)
         self.name = name
         self.cols = cols
         self.created = created

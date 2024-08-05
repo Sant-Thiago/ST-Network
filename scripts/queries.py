@@ -65,19 +65,25 @@ def createDB(name):
         
 def createTB(name):
     query = f"""
+    IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[{name}]') AND type in (N'U'))
     BEGIN
-        IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[{name}]') AND type in (N'U'))
-        BEGIN
-            CREATE DATABASE {name} (Id INT IDENTITY(1,1) PRIMARY KEY);
-        END
-
-        SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[{name}]') AND type in (N'U')
-    END"""
+        CREATE TABLE {name} (Id INT IDENTITY(1,1) PRIMARY KEY);
+    END
+    """
 
     with ConDB() as conDB:
         if conDB.connection:
             cursor = conDB.connection.cursor()
             cursor.execute(query)
-            result = cursor.fetchone()
+            result = cursor.fetchmany()
             cursor.close()
             return result
+
+# SEPARAR ISSO EM OUTROS COMANDOS
+
+# Usado para pegar o nome das colunas da tabela especificada
+# SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{name}' AND TABLE_SCHEMA = 'dbo';
+
+# Usado para pegar detalhes da tabela
+# SELECT t.name, s.name, t.create_date FROM sys.tables t JOIN sys.schemas s ON t.schema_id = s.schema_id WHERE t.name = '{name}' AND s.name = 'dbo';
+
